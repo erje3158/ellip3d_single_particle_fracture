@@ -1,0 +1,1 @@
+The outputs from run.pbs are symbolically linked from $WORKDIR to here.

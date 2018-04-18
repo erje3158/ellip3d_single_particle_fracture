@@ -2,3 +2,4 @@ outputs/*
 source/*.o
 source/*.d
 source/ellip3d
+*.o*
