@@ -11,7 +11,7 @@ if [ "$#" = 1 ]
 			module swap PrgEnv-intel PrgEnv-gnu
 			module list
 
-			rm *.o *~ hu_code
+			rm *.o *~ ellip3d
 			make
 			echo "Done!"
 
