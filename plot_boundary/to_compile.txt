@@ -1,0 +1,1 @@
+g++ -o plot_boundary plot_only_top_bottom_boundaries_read_directly_boundaries.cpp

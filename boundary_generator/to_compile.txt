@@ -1,0 +1,1 @@
+g++ -o generator triaxial_boundary_generator.cpp
