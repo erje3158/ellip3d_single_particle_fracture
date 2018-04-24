@@ -20293,11 +20293,11 @@ void assembly::unixialCompression(int   total_steps,
     }
     
     // first tessellation
-    createInputForQhull();
-    callQhull();
-    readTesse("tess_info");
-    readTesse_finite("tess_info");
-    cellVec_init = cellVec;	// keep cellVec_init for lagrangian strain unchanged 
+    //createInputForQhull();
+    //callQhull();
+    //readTesse("tess_info");
+    //readTesse_finite("tess_info");
+    //cellVec_init = cellVec;	// keep cellVec_init for lagrangian strain unchanged 
 
     REAL epsilon_w, epsilon_l, epsilon_h;
     REAL epsilon_w_log, epsilon_l_log, epsilon_h_log;	// lograthmic strain
@@ -20442,12 +20442,12 @@ void assembly::unixialCompression(int   total_steps,
 //	       eulerianStrain(3,3)-previousEuler(3,3)>strainThreshold ){	// need to tessellate again
 //			resetStartCenterMass();	// reset initial position
 			// tessellate again
-			createInputForQhull();
-			callQhull();
-			readTesse("tess_info");
-			readTesse_finite("tess_info");
+//			createInputForQhull();
+//			callQhull();
+//			readTesse("tess_info");
+//			readTesse_finite("tess_info");
 //	    }
-
+/*
 	// calculate strain by rate
 	prev_strain_rate.clear();
 	prev_strain_rate = curr_strain_rate;	// set previous strain
@@ -20502,6 +20502,7 @@ void assembly::unixialCompression(int   total_steps,
 
 	    granularStress.clear();
 	    granularStress = getGranularStress();	// calculate granular stress
+*/
 
 	    stiffnessD = calculateStiffness();
 	    D11=stiffnessD(9,9);
