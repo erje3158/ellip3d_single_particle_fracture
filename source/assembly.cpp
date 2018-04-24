@@ -20421,16 +20421,19 @@ void assembly::unixialCompression(int   total_steps,
 	updateRB(mid,midctl,2);
 	updateRB(max,maxctl,2);
 	updateRB6();
-	
-	// 7. (1) output particles and contacts information
-	if (g_iteration % (total_steps/snapshots) == 0){
-	    sprintf(stepsstr, "%03d", stepsnum+first_snapshot); 
-	    strcpy(stepsfp,particlefile); strcat(stepsfp, "_"); strcat(stepsfp, stepsstr);
-	    printParticle(stepsfp);    
-	    time(&timeStamp);
-	    g_timeinf << setw(4) << stepsnum << " " << ctime(&timeStamp) << flush;
-	    ++stepsnum;
-	}
+
+    // 7. (1) output particles and contacts information
+  if (g_iteration % (total_steps/snapshots) == 0){
+      sprintf(stepsstr, "%03d", stepsnum+first_snapshot); 
+      strcpy(stepsfp,particlefile); strcat(stepsfp, "_"); strcat(stepsfp, stepsstr);
+      printParticle(stepsfp); 
+      sprintf(stepsstr, "%03d", stepsnum+first_snapshot); 
+      strcpy(stepsfp,"boundary"); strcat(stepsfp, "_"); strcat(stepsfp, stepsstr);
+      printBoundary(stepsfp);   
+      time(&timeStamp);
+      g_timeinf << setw(4) << stepsnum << " " << ctime(&timeStamp) << flush;
+      ++stepsnum;
+  }
 
 	// 7. (2) output stress and strain info
 	epsilon_w = (W0-l24)/W0; epsilon_l = (L0-l13)/L0; epsilon_h = (H0-l56)/H0;
