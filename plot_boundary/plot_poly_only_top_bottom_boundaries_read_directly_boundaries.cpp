@@ -7,19 +7,20 @@
 #include <cmath>
 
 // this not only plots the particles, but also the boundaries
-// September 4, 2014
+// September 2, 2014
+// in this version, the coordinates of boundaries are read directly from
+// the particle files. This is used to plot the single particle fracture 
+// compression simulations. May 2, 2015
 
 using namespace std;
 
-
 // boundary coordinates, m
-const double xmax = 0.001;
-const double xmin = -0.001;
-const double ymax = 0.001;
-const double ymin = -0.001;
+const double xmax = 0.0015;
+const double xmin = -0.0004;
+const double ymax = 0.002;
+const double ymin = -0.0004;
 //const double zmax = 3.945047e-4;
 //const double zmin = 9.688768e-4;
-
 
 const long double PI = 3.1415927;
 const int NODE  = 134;
@@ -205,7 +206,7 @@ int main(int argc, char *argv[])
 
     int ID, type, TotalNum, RORS;
     long double cx, cy, cz, rd, wd, lt, ht;
-    long double a, b, c, x0, y0, z0, l1, l2, l3, m1, m2, m3, n1, n2, n3, tmp;
+    long double a_plus, a_minus, b_plus, b_minus, c_plus, c_minus, x0, y0, z0, l1, l2, l3, m1, m2, m3, n1, n2, n3, tmp;
     long double x, y, z, xp, yp, zp, t, theta; // x, y, z are local coodinates, xp, yp, zp are global.
     int n, i, j, k;
     long double zmax = 0;
@@ -236,49 +237,105 @@ int main(int argc, char *argv[])
 	ifs >> TotalNum >> RORS;
 	ifs >> zmax >> zmin;
 
-	ifs>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s
-	   >>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s;
+	ifs>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s
+	   >>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s>>s;
 
 	ofs << "ZONE N=" << NODE*TotalNum+8 << ", E=" << ELEM*TotalNum+2 << ", DATAPACKING=POINT, ZONETYPE=FEQUADRILATERAL" << endl;
 	for(k = 0; k < TotalNum; ++k)
 	{
-	    ifs >> ID >> type >> a >> b >> c >> x0 >> y0 >> z0 >> l1 >> m1 >> n1 >> l2 >> m2 >> n2 >> l3 >> m3 >> n3
-		>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp;
+	    ifs >> ID >> type >> a_plus >> a_minus >> b_plus >> b_minus >> c_plus >> c_minus >> x0 >> y0 >> z0 >> l1 >> m1 >> n1 >> l2 >> m2 >> n2 >> l3 >> m3 >> n3 >>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp>>tmp;
 	    
-	    ofs << setfill(' ') << setw(16) << cosl(l1)*(-a) + x0
-		<< setfill(' ') << setw(16) << cosl(m1)*(-a) + y0
-		<< setfill(' ') << setw(16) << cosl(n1)*(-a) + z0
+	    ofs << setfill(' ') << setw(16) << cosl(l1)*(-a_minus) + x0
+		<< setfill(' ') << setw(16) << cosl(m1)*(-a_minus) + y0
+		<< setfill(' ') << setw(16) << cosl(n1)*(-a_minus) + z0
 		<< endl;
 	    
-	    for(i=0, x = -a+0.2*a/3; i < 11; ++i)
+	    for(i=0; i < 11; ++i)
 	    {
-		t = sqrtl(1 - powl(x/a, 2));
+		switch (i)
+		{
+			case 0:
+				x = -2.8/3*a_minus;
+				t = sqrtl(1 - powl(x/a_minus, 2));
+				break;
+			case 1:
+				x = -0.8*a_minus;
+				t = sqrtl(1 - powl(x/a_minus, 2));
+				break;
+			case 2:
+				x = -0.6*a_minus;
+				t = sqrtl(1 - powl(x/a_minus, 2));
+				break;
+			case 3:
+				x = -0.4*a_minus;
+				t = sqrtl(1 - powl(x/a_minus, 2));
+				break;
+			case 4:
+				x = -0.2*a_minus;
+				t = sqrtl(1 - powl(x/a_minus, 2));
+				break;
+			case 5:
+				x = 0;
+				t = 1;
+				break;
+			case 6:
+				x = 0.2*a_plus;
+				t = sqrtl(1 - powl(x/a_plus, 2));
+				break;
+			case 7:
+				x = 0.4*a_plus;
+				t = sqrtl(1 - powl(x/a_plus, 2));
+				break;
+			case 8:
+				x = 0.6*a_plus;
+				t = sqrtl(1 - powl(x/a_plus, 2));
+				break;
+			case 9:
+				x = 2.2/3*a_plus;
+				t = sqrtl(1 - powl(x/a_plus, 2));
+				break;
+			case 10:
+				x = 2.8/3*a_plus;
+				t = sqrtl(1 - powl(x/a_plus, 2));
+				break;
+		}
+		
 		for(j=0, theta = 0; j < 12; ++j, theta += PI/6)
 		{
-		    y = b*t*sinl(theta);
-		    z = c*t*cosl(theta);
+			if ( theta >=0 && theta < 0.5*PI )	// c+ and b+
+		    	{	y = b_plus*t*cosl(theta);
+		    		z = c_plus*t*sinl(theta);
+			}
+			if ( theta >=0.5*PI && theta < PI )	// c+ and b-
+		    	{	y = b_minus*t*cosl(theta);
+		    		z = c_plus*t*sinl(theta);
+			}
+			if ( theta >=PI && theta < 1.5*PI )	// c- and b-
+		    	{	y = b_minus*t*cosl(theta);
+		    		z = c_minus*t*sinl(theta);
+			}
+			if ( theta >=1.5*PI && theta < 2*PI )	// c- and b+
+		    	{	y = b_plus*t*cosl(theta);
+		    		z = c_minus*t*sinl(theta);
+			}
 		    
 		    xp  = cosl(l1)*x + cosl(l2)*y + cosl(l3)*z + x0;
 		    yp  = cosl(m1)*x + cosl(m2)*y + cosl(m3)*z + y0;
 		    zp  = cosl(n1)*x + cosl(n2)*y + cosl(n3)*z + z0;
-		    
+				    
 		    ofs << setfill(' ') << setw(16) << xp
 			<< setfill(' ') << setw(16) << yp
 			<< setfill(' ') << setw(16) << zp
 			<< endl;
 		}
-		if (i==0 || i==9)
-		    x += 0.2*a/3*2;
-		else
-		    x += 0.2*a;
 	    }
 	    
-	    ofs << setfill(' ') << setw(16) << cosl(l1)*a + x0
-		<< setfill(' ') << setw(16) << cosl(m1)*a + y0
-		<< setfill(' ') << setw(16) << cosl(n1)*a + z0
+	    ofs << setfill(' ') << setw(16) << cosl(l1)*a_plus + x0
+		<< setfill(' ') << setw(16) << cosl(m1)*a_plus + y0
+		<< setfill(' ') << setw(16) << cosl(n1)*a_plus + z0
 		<< endl;
 	}
-
+	
 	// output boundary points
 	ofs << setw(16) << xmin << setw(16) << ymin << setw(16) << zmin << endl
 	    << setw(16) << xmax << setw(16) << ymin << setw(16) << zmin << endl
@@ -288,7 +345,9 @@ int main(int argc, char *argv[])
 	    << setw(16) << xmax << setw(16) << ymin << setw(16) << zmax << endl
 	    << setw(16) << xmax << setw(16) << ymax << setw(16) << zmax << endl
 	    << setw(16) << xmin << setw(16) << ymax << setw(16) << zmax << endl;
-	
+
+
+
 	for(k = 0; k < TotalNum; ++k)
 	{
 	    for(i = 0; i < ELEM; ++i)
@@ -297,10 +356,10 @@ int main(int argc, char *argv[])
 		    << setw(10)<< CONNECT[i][2] + NODE*k
 		    << setw(10)<< CONNECT[i][3] + NODE*k << endl;
 	}
-	
+
 	ofs << setw(10) << NODE*TotalNum+1 << setw(10) << NODE*TotalNum+2 << setw(10) << NODE*TotalNum+3 << setw(10) << NODE*TotalNum+4 << endl
 	    << setw(10) << NODE*TotalNum+5 << setw(10) << NODE*TotalNum+6 << setw(10) << NODE*TotalNum+7 << setw(10) << NODE*TotalNum+8 << endl;
-
+	
 	ifs.close();
 	ofs.close();
     }

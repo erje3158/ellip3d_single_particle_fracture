@@ -84,12 +84,7 @@ void assembly::printParticle(const char* str) const {	// August 19, 2013
   ofs.setf(std::ios::scientific, std::ios::floatfield);
   ofs.precision(OPREC);
   ofs << setw(OWID) << TotalNum << setw(OWID) << 1 << endl;
-  ofs << setw(OWID) << container.getCenter().getx()
-      << setw(OWID) << container.getCenter().gety()
-      << setw(OWID) << container.getCenter().getz()
-      << setw(OWID) << container.getDimx()
-      << setw(OWID) << container.getDimy()
-      << setw(OWID) << container.getDimz() << endl;
+  ofs << setw(OWID) << getApt(5).getz() << setw(OWID) << getApt(6).getz() << endl;
   
   ofs << setw(OWID) << "ID"
       << setw(OWID) << "type"
