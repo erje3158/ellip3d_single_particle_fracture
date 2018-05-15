@@ -15,10 +15,10 @@
 using namespace std;
 
 // boundary coordinates, m
-const double xmax = 0.0015;
-const double xmin = -0.0004;
-const double ymax = 0.002;
-const double ymin = -0.0004;
+const double xmax = 0.001;
+const double xmin = -0.001;
+const double ymax = 0.001;
+const double ymin = -0.001;
 //const double zmax = 3.945047e-4;
 //const double zmin = 9.688768e-4;
 
