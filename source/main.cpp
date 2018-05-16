@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
                                    argv[2] << " " << argv[3] << " " << argv[4] << " " << argv[5] << std::endl; 
     }
 
-    dem_inputs = argv[4]
+    dem_inputs = argv[4];
 
     if(ifstream(dem_inputs)) {
         cout << "DEM input file found..." << endl;
