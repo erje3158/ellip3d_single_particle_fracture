@@ -11,10 +11,13 @@
 #include "gradation.h"
 #include "rectangle.h"
 #include "assembly.h"
+#include "userInput.h"
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include <cstring>
 #include <fstream>
+#include <unistd.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // main program
