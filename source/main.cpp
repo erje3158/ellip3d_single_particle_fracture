@@ -14,11 +14,15 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include <fstream>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // main program
 int main(int argc, char* argv[])
 {
+
+  const char * dem_inputs;
+  char cCurrentPath[FILENAME_MAX];
     // the number of arguments is 3/4
     // serial: ./ellip3d topDisplacement bottomDisplacement numberOfCalls
     // openMP: ./ellip3d topDisplacement bottomDisplacement numberOfCalls numThreads
@@ -29,42 +33,51 @@ int main(int argc, char* argv[])
     // Part 0: command line arguments and timestamps
     time_t time1, time2;
     time(&time1);
-    if(argc<4 || argc>5){
+    if(argc<5 || argc>6){
 	std::cout << "Error in calling moveDEM!" << std::endl
 		  << "Usage: " << std::endl
-		  << "./ellip3d topDisplacement(m) bottomDisplacement(m) numberOfCalls [numThreads]..." << std::endl;
+		  << "./ellip3d topDisplacement(m) bottomDisplacement(m) numberOfCalls dem_input_file [numThreads]..." << std::endl;
     }
 
-    if (argc == 5) {
-	dem::NUM_THREADS = atoi(argv[4]);
-	std::cout << "command line: " << argv[0] << " " << argv[1] << " " << argv[2] << " " << argv[3] << " " << argv[4] << std::endl; 
+    if (argc == 6) {
+	dem::NUM_THREADS = atoi(argv[5]);
+	std::cout << "command line: " << argv[0] << " " << argv[1] << " " <<
+                                   argv[2] << " " << argv[3] << " " << argv[4] << " " << argv[5] << std::endl; 
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Part 1: setup parameters (override parameter.cpp)
-    // 1. time integration method
-    // --- dynamic
-/*
-    dem::TIMESTEP      = 5.0e-8; // time step
-    dem::MASS_SCL      = 100;       // mass scaling
-    dem::MNT_SCL       = 100;       // moment of inertial scaling
-    dem::GRVT_SCL      = 0;       // gravity scaling
-    dem::DMP_F         = 10;       // background viscous damping on mass
-    dem::DMP_M         = 10;       // background viscous damping on moment of inertial
-*/
-    
+    dem_inputs = argv[4]
+
+    if(ifstream(dem_inputs)) {
+        cout << "DEM input file found..." << endl;
+    }
+    else {
+        cout << "DEM input file not found...exiting..." << endl;
+        return -1;
+    }
+    // Get Current Directory Path where the programming is running
+    if (!getcwd(cCurrentPath, sizeof(cCurrentPath))) {
+        return errno;
+    }
+
+    cout << "Current Directory is " << cCurrentPath << endl;
+
+    //Read data from input file (dem_inputs)
+    demInput demParams;
+    demParams.readData(dem_inputs);
+    demParams.echoData();
+    demParams.checkData();
+
     // --- dynamic relaxation and scaling
-    dem::TIMESTEP      = 2.0e-10; // 
+    dem::TIMESTEP      = demParams.timestep; //
     dem::MASS_SCL      = 1.0;
     dem::MNT_SCL       = 1.0;
     dem::GRVT_SCL      = 1.0;       // 1.0e+03;
     dem::DMP_F         = 0;
     dem::DMP_M         = 0;
     
-
     // 2. normal damping and tangential friciton
-    dem::DMP_CNT       = 0.7;    // normal contact damping ratio
-    dem::FRICTION      = 0.8;     // coefficient of friction between particles
+    dem::DMP_CNT       = demParams.damping;    // normal contact damping ratio
+    dem::FRICTION      = demParams.friction;     // coefficient of friction between particles
     dem::BDRYFRIC      = 0.8;     // coefficient of friction between particle and rigid wall
     dem::COHESION      = 0;       // cohesion between particles, 5.0e+8
 
@@ -73,6 +86,15 @@ int main(int argc, char* argv[])
     dem::RELEASE_RATE  = 7.0e-03; // the same as above
     dem::PILE_RATE     = 2.5e-01; // pile penetration velocity
     dem::STRESS_ERROR  = 2.0e-02; // tolerance of stress equilibrium on rigid walls
+
+    dem::MAXOVERLAP    = demParams.maxOverlap;
+    dem::YOUNG         = demParams.youngsMod;
+    dem::POISSON       = demParams.poisRatio;
+
+    dem::sigma_critical         = demParams.sigmaCrit; 
+    dem::sigmaCompress          = demParams.sigmaComp;
+    dem::ContactTensileCritical = demParams.tensileCrit;
+    dem::sigma_f                = demParams.sigmaF;
 
     dem::assembly A;
 
