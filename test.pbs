@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N single_part_sim
+#PBS -N test
 #PBS -l select=1:ncpus=32:mpiprocs=32
 #PBS -l walltime=1:00:00
 #PBS -l place=scatter:excl
