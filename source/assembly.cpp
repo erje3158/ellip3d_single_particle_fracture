@@ -20103,6 +20103,7 @@ void assembly::unixialCompression(int   total_steps,
 
     REAL avgNormal=0;
     REAL avgTangt=0;
+    REAL avgFracForce = 0;  // average fracture forces
     int         stepsnum=0;
     char        stepsstr[4];
     char        stepsfp[50];
@@ -20156,7 +20157,6 @@ void assembly::unixialCompression(int   total_steps,
 
 	// 5. update particles' velocity/omga/position/orientation based on force/moment
 	updateParticle();
-  removeOutsideParticles();
 
 	subDivision();
 
