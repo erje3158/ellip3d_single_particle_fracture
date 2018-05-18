@@ -7,6 +7,9 @@ $DEM Constitutive
 
 $Time Parameters
 2.0e-8
+5000000
+500
+100
 
 $Particle Contact
 0.7
