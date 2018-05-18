@@ -109,6 +109,8 @@ fracpair::fracpair(particle* t1, particle* t2, int break_plane){
     k0_spring[1] = k0_spring[0];
     k0_spring[2] = k0_spring[0];
     k0_spring[3] = k0_spring[0];
+
+    cout << "Value of k0_spring = " << k0_spring[0] << endl;
 //    kt_spring[1] = kt_spring[0];
 //    kt_spring[2] = kt_spring[0];
 //    kt_spring[3] = kt_spring[0];
