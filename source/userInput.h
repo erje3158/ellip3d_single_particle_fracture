@@ -15,7 +15,7 @@ public:
   double timestep;
   int totalSteps;
   int printInt;
-  int numSnaps
+  int numSnaps;
 
   double damping;
   double friction;
