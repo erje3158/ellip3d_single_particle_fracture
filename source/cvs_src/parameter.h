@@ -1,4 +1,10 @@
-#include "parameter.h"
+// #define marcos are placed in namespace dem nominally for convenience,
+// they are not contained by any namespace, i.e., they are preprocessed.
+ 
+#ifndef PARAMETER_H
+#define PARAMETER_H
+#include "realtypes.h"
+#include <fstream>
 
 namespace dem { 
 
@@ -7,91 +13,100 @@ namespace dem {
 ///////////////////////////////////////////////////////////////////////////////////////
 
 // PI value
-const REAL PI         = 3.141592653589;
+extern const REAL PI;
 
-// gravitational acceleration
-const REAL G          = 9.8;
+// Gravitational acceleration
+extern const REAL G;
 
 // EPS (NOT float point relative precision, eps), problem domain dependent
-const REAL EPS        = 1.0e-12;
+extern const REAL EPS;
 
 // relative overlap between particles
-const REAL MINOVERLAP = 1.0e-6;
-const REAL MAXOVERLAP = 1.0e-1;	// origin is 1.0e-2
+extern const REAL MINOVERLAP;
+extern const REAL MAXOVERLAP;
 
-// measurable absolute overlap precision between particles, enabled/disabled by macro MEASURE_EPS
-const REAL MEPS       = 1.0e-8;  // 0.1 micron or 0.01 micron
+// macro to toggle on/off MEPS
+#define MEASURE_EPS
+
+// measurable absolute overlap precision between particles
+extern const REAL MEPS;
 
 // random number seed
-long idum             = -1;      // not a constant
+extern long idum;
+
+// macro to toggle on/off random shape for each particle
+//#define RANDOM_SHAPE
 
 // particle material property
-const REAL YOUNG      = 40e+9;	 // quartz sand E  = 29GPa
-const REAL POISSON    = 0.18;    // quartz sand v  = 0.25     
-const REAL Gs         = 2.65;    // quartz sand Gs = 2.65    
+extern const REAL YOUNG;  
+extern const REAL POISSON;      
+extern const REAL Gs;   
 
 // critical tensile stress for particle sub-division
-const REAL sigmaCritical = 2.7235e+7;	// pa, calculate from experiment
+extern const REAL sigmaCritical;	// calculated from experiment
 
 // compressive strength for particle sub-division based on Hoek-Brown criterion
-const REAL sigmaCompress = 592e+6;	// calculated from experiment
-const REAL mi		  = 20.56;	// material const, for granite mi=32.4
+extern const REAL sigmaCompress;	// calculated from experiment
+extern const REAL mi;			// material const, for granite mi=32.4
 
 // critical maximum tensile stress for contact point criterion
-const REAL ContactTensileCritical = 350.196e+7;	// calculated from experiment
-//const REAL ContactTensile_critical = 0;	// in order to print out the maximum contact stress vs displacement
+extern const REAL ContactTensileCritical;	// calculated from experiment
 
 // Weibull modulus used for particle strength
-const REAL weibullModulus = 0.5;
-const REAL basicRadius = 3e-4;	// the radius of the base particle in weibull function
+extern const REAL weibullModulus;
+extern const REAL basicRadius;	// the radius of the base particle in weibull function
 
 // properties for the springs
-const REAL sigma_f = 4.13e7;	// soft criterion for spring
-const REAL Cf = 1.0739e+2;	// crack propagate speed, not accurate, since only point to calculate this speed
-				// the accurate propogate speed should be larger than this value
+extern const REAL sigma_f;	// soft criterion for spring, need to be calibrated
+extern const REAL Cf;		// crack propagate speed, calculated from experiment
+
 // membrane particle material property
-const REAL memYOUNG   = 1.40e+6; // 1.4MPa
-const REAL memPOISSON = 0.49;
+extern const REAL memYOUNG;
+extern const REAL memPOISSON;
 
 // other global variables
-std::ofstream g_debuginf;        // print debugging information
-std::ofstream g_timeinf;         // print time log
-int g_iteration;                 // iteration number
-int numBrokenType1;		// Hoek-Brown criterion or maximum shear stress
-int numBrokenType2;		// maximum tensile stress at contacts
+extern std::ofstream g_debuginf;
+extern std::ofstream g_timeinf;
+extern int g_iteration;
 
-// output width and precision
-const int OWID        = 16;      // 20, output width
-const int OPREC       = 6;       // 10, output precision, number of digits after decimal dot
+// number of particles broken in different subdivisions
+extern int numBrokenType1;	// Hoek-Brown criterion or maximum shear stress
+extern int numBrokenType2;	// maximum tensile stress at contacts
+
+// output field width and precision
+extern const int OWID;
+extern const int OPREC;
 
 // number of timesteps for transition process
-const int numStepTransition = 50;
+extern const int numStepTransition;
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Part B: These parameters may change frequently and can be easily edited in main.cpp
 ///////////////////////////////////////////////////////////////////////////////////////
 
 // number of OpenMP threads
-int  NUM_THREADS      = 1;
+extern int  NUM_THREADS;
 
 // 1. time integration method 
-REAL TIMESTEP         = 5.0e-07; // time step
-REAL MASS_SCL         = 1;       // mass scaling
-REAL MNT_SCL          = 1;       // moment of inertia scaling
-REAL GRVT_SCL         = 1;       // gravity scaling
-REAL DMP_F            = 0;       // background viscous damping on mass   
-REAL DMP_M            = 0;       // background viscous damping on moment of inertial
+extern REAL TIMESTEP;
+extern REAL MASS_SCL;
+extern REAL MNT_SCL;
+extern REAL GRVT_SCL;
+extern REAL DMP_F;
+extern REAL DMP_M;
 
 // 2. normal damping and tangential friction
-REAL DMP_CNT          = 0.05;    // damping ratio of viscous damping for normal contact force, for both particle-particle and particle-boundary contact
-REAL FRICTION         = 0.5;     // constant coefficient of static friction between particles
-REAL BDRYFRIC         = 0.5;     // constant coefficient of static friction between particle and rigid wall
-REAL COHESION         = 5.0e+8;  // cohesion between particles (10kPa)
+extern REAL DMP_CNT;
+extern REAL FRICTION;
+extern REAL BDRYFRIC;
+extern REAL COHESION;
 
 // 3. boundary displacement rate
-REAL COMPRESS_RATE    = 7.0e-03; // 7.0e-03 for triaxial; 1.0e-03 for isotropic and odometer.
-REAL RELEASE_RATE     = 7.0e-03; // the same as above
-REAL PILE_RATE        = 2.5e-01; // pile penetration velocity
-REAL STRESS_ERROR     = 2.0e-02; // tolerance of stress equilibrium on rigid walls
+extern REAL COMPRESS_RATE;
+extern REAL RELEASE_RATE;
+extern REAL PILE_RATE;
+extern REAL STRESS_ERROR;
 
 } // namespace dem ends
+
+#endif
