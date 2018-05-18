@@ -20026,8 +20026,7 @@ void assembly::unixialCompression(int   total_steps,
 		<< setw(OWID) << "bottom"
 		<< setw(OWID) << "bottom"
 		<< setw(OWID) << "top"
-		<< setw(OWID) << "top" 
-		<< setw(OWID) << "tangent" << endl
+		<< setw(OWID) << "top" << endl
 	        << setw(OWID) << "number"
 	        << setw(OWID) << "contacts"
 	        << setw(OWID) << "contacts"
@@ -20157,8 +20156,7 @@ void assembly::unixialCompression(int   total_steps,
 		<< setw(OWID) << "displacement"
 		<< setw(OWID) << "force"
 		<< setw(OWID) << "displacement"
-		<< setw(OWID) << "force" 
-                << setw(OWID) << "operator" << endl;
+		<< setw(OWID) << "force" << endl;
 
     std::ofstream balancedinf(balancedfile);
     if(!balancedinf) { cout << "stream error!" << endl; exit(-1);}
@@ -20271,9 +20269,6 @@ void assembly::unixialCompression(int   total_steps,
     matrix curr_dvdx(3,3);	// current spatial velocity gradient tensor
     matrix prev_strain_rate(3,3);
     matrix curr_strain_rate(3,3);	// current strain based on deformation rate tensor
-   
-    matrix stiffnessD(9,9);
-    REAL D11;
 
     // initialize previousStrain(3,3)
     for(int i_ps=0; i_ps!=2; i_ps++){
@@ -20344,14 +20339,15 @@ void assembly::unixialCompression(int   total_steps,
 	// 4. calculate boundary forces/moments and apply them to particles
 	rigidBoundaryForce(bdry_penetr, bdry_cntnum);
 
-//	calculateInitialCohesiveForce();	// calculate it here, since now we have the contact forces acting on the 
+  calculateInitialCohesiveForce();	// calculate it here, since now we have the contact forces acting on the 
 						// two sub-poly-ellipsoids separately.
-//	addFractureForce(avgFracForce);
+	addFractureForce(avgFracForce);
 //
-//	eraseFracturePair();
+	eraseFracturePair();
 
 	// 5. update particles' velocity/omga/position/orientation based on force/moment
 	updateParticle();
+  removeOutsideParticles();
 
 	subDivision();
 
@@ -20502,8 +20498,7 @@ void assembly::unixialCompression(int   total_steps,
 	    granularStress = getGranularStress();	// calculate granular stress
 */
 
-	    stiffnessD = calculateStiffness();
-	    D11=stiffnessD(9,9);
+      calcNumSprings();
 
 	    gettimeofday(&time_w2,NULL);
 	    progressinf << setw(OWID) << g_iteration
@@ -20573,7 +20568,6 @@ void assembly::unixialCompression(int   total_steps,
 			<< setw(OWID) << vfabs(getNormalForce(6))
 			<< setw(OWID) << getApt(5).getz() - top_init
 			<< setw(OWID) << vfabs(getNormalForce(5))
-			<< setw(OWID) << D11
 		        << endl;
 //	    g_debuginf << setw(OWID) << g_iteration
 //		       << setw(OWID) << getTransEnergy()
