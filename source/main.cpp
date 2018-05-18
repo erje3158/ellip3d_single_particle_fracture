@@ -103,14 +103,14 @@ int main(int argc, char* argv[])
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Part 2: set up a simulation to run
-    int numSnap = 100;
+    int numSnap = demParams.numSnaps;
     
-    A.unixialCompression(5000000,	// the timestep used in FEM and DEM may be different, so control the total_steps to keep the time the same
+    A.unixialCompression(demParams.totalSteps,	// the timestep used in FEM and DEM may be different, so control the total_steps to keep the time the same
 	    atof(argv[1]),		// displacement of top boundary, positive downward
 	    atof(argv[2]),  		// displacement of bottom boundary, positive upward
 	    (atof(argv[3])-1)*numSnap,	// the number of first snapshot
 	    numSnap, 		// number of snapshots
-	    500,  		// print interval for progress file
+	    demParams.printInt,  		// print interval for progress file
 	    "input_particle_file", 
 	    "input_boundary_file",
 	    "comp_particle",	// this should be the same as iniptclfile, since the output file will be used as input file for next run

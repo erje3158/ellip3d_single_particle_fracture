@@ -13,6 +13,9 @@ public:
   double poisRatio;
 
   double timestep;
+  int totalSteps;
+  int printInt;
+  int numSnaps
 
   double damping;
   double friction;
@@ -30,6 +33,9 @@ public:
     poisRatio    = 0.0;
 
     timestep     = 0.0;
+    totalSteps   =   0;
+    printInt     =   0;
+    numSnaps     =   0;
 
     damping      = 0.0;
     friction     = 0.0;
