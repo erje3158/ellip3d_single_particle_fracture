@@ -1,9 +1,9 @@
 #!/bin/bash
 #PBS -N parStudy05
 #PBS -l select=1:ncpus=32:mpiprocs=32
-#PBS -l walltime=1:00:00
+#PBS -l walltime=24:00:00
 #PBS -l place=scatter:excl
-#PBS -q debug
+#PBS -q standard
 #PBS -j oe
 #PBS -V
 #PBS -A ARLAP01001YF6
