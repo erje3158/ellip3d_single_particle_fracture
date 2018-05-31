@@ -2,7 +2,7 @@ $Particle Overlap
 5.0e-1
 
 $DEM Constitutive
-3.0e10
+3.0e12
 0.18
 
 $Time Parameters
