@@ -9,6 +9,39 @@ $!PlotType = Cartesian3D
 $!FieldLayers ShowMesh = Yes
 $!FieldLayers ShowShade = Yes
 $!RedrawAll 
+$!ThreeDView 
+  PSIAngle = 69.2796
+  ThetaAngle = -126.691
+  AlphaAngle = 15.4942
+  ViewerPosition
+    {
+    X = 0.04957740720938283
+    Y = 0.03701589830402634
+    Z = 0.02378917492369825
+    }
+  ViewWidth = 0.0121047
+$!ThreeDView 
+  PSIAngle = 82.2306
+  ThetaAngle = -124.335
+  AlphaAngle = 6.00064
+  ViewerPosition
+    {
+    X = 0.05408132229835212
+    Y = 0.03701589830402634
+    Z = 0.009345394247238901
+    }
+  ViewWidth = 0.0121047
+$!ThreeDView 
+  PSIAngle = 80.713
+  ThetaAngle = -124
+  AlphaAngle = 3.74016
+  ViewerPosition
+    {
+    X = 0.05408132229835212
+    Y = 0.03655382824501618
+    Z = 0.01107597056474633
+    }
+  ViewWidth = 0.0121047
 $!PrintSetup Palette = Color
 $!ExportSetup ExportFormat = AVI
 $!ExportSetup ImageWidth = 930
