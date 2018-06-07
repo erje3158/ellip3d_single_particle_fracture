@@ -1,0 +1,62 @@
+#!/bin/bash
+#PBS -N parStudy18
+#PBS -l select=1:ncpus=32:mpiprocs=32
+#PBS -l walltime=24:00:00
+#PBS -l place=scatter:excl
+#PBS -q standard
+#PBS -j oe
+#PBS -V
+#PBS -A ARLAP01001YF6
+#PBS -m be
+#PBS -M jensen.erik.w@gmail.com
+
+# --- USER INPUT ---
+export PREFIX=$PBS_JOBNAME #PBS_JOBNAME is the name of the job that's been submitted
+export LOCAL_DIR=$PBS_O_WORKDIR #the directory where the script was run 
+export TMPD=$WORKDIR #my personal work directory on excalibur - data here is temp (15 days after run done)
+JOBNUM=`echo ${PBS_JOBID} | cut -d "." -f 1` #create variable out of job number PBS assigns this job
+
+export NSLOTS=`wc -l $PBS_NODEFILE | cut -f1 -d" "`
+echo NSLOTS = $NSLOTS
+
+export OMP_NUM_THREADS=32
+echo OMP_NUM_THREADS = $OMP_NUM_THREADS
+
+export DEM_INP=parStudy18_dem_input
+
+# --- HARDCODED DIRECTORIES ---
+
+export EXE=${LOCAL_DIR}/source
+export BIN=${LOCAL_DIR}/bin
+export INP=${LOCAL_DIR}/inputs
+export OUT=${LOCAL_DIR}/outputs
+
+# --- WORKING DIRECTORY ---
+
+export TMP_DIR=${TMPD}/${JOBNUM} #create directory to run the job in $WORKDIR/$JOBNUM
+mkdir -p ${TMP_DIR}
+cp ${EXE}/ellip3d ${TMP_DIR} #copies from the place this script is run into the work dir
+cp ${INP}/input_particle_file ${TMP_DIR}
+cp ${INP}/input_boundary_file ${TMP_DIR}
+cp ${INP}/$DEM_INP ${TMP_DIR}
+cp ${BIN}/qdelaunay ${TMP_DIR}
+cd ${TMP_DIR}
+ln -s ${TMP_DIR}/ ${OUT}/${JOBNUM} #create link to the work dir
+pwd
+
+# --- MACHINE SPECIFIC ---
+module swap PrgEnv-intel PrgEnv-gnu
+module list
+
+#### NPROCS = select*mpiprocs
+
+echo Simulation started at `date`
+./ellip3d 0.0005 0 1 $DEM_INP $OMP_NUM_THREADS
+echo Simulation finished at `date`
+
+# --- POSTPROCESS ---
+#/usr/bin/gnuplot ${PREFIX}.gpl
+#mv ${TMP_DIR}/* ${LOCAL_DIR}/.
+#mv ~/${PREFIX}.o${JOBNUM} ${LOCAL_DIR}/${JOBNUM}/.
+
+
