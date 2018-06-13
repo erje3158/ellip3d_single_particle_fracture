@@ -1,4 +1,5 @@
 #include "parameter.h"
+#include <time.h>
 
 namespace dem { 
 
@@ -23,7 +24,7 @@ REAL MAXOVERLAP = 5.0e-1;	// origin is 1.0e-2
 const REAL MEPS       = 1.0e-8;  // 0.1 micron or 0.01 micron
 
 // random number seed
-long idum             = -1;      // not a constant
+long idum             = -time(NULL);      // not a constant
 
 // particle material property
 REAL YOUNG      = 8e+9;	 // quartz sand E  = 29GPa
