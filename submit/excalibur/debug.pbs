@@ -1,9 +1,9 @@
 #!/bin/bash
-#PBS -N long_noSplit
+#PBS -N debug
 #PBS -l select=1:ncpus=32:mpiprocs=32
-#PBS -l walltime=12:00:00
+#PBS -l walltime=1:00:00
 #PBS -l place=scatter:excl
-#PBS -q standard
+#PBS -q debug
 #PBS -j oe
 #PBS -V
 #PBS -A ARLAP01001YF6
@@ -22,6 +22,8 @@ echo NSLOTS = $NSLOTS
 export OMP_NUM_THREADS=32
 echo OMP_NUM_THREADS = $OMP_NUM_THREADS
 
+export DEM_INP=${PREFIX}_dem_input
+
 # --- HARDCODED DIRECTORIES ---
 
 export EXE=${LOCAL_DIR}/source
@@ -36,7 +38,7 @@ mkdir -p ${TMP_DIR}
 cp ${EXE}/ellip3d ${TMP_DIR} #copies from the place this script is run into the work dir
 cp ${INP}/input_particle_file ${TMP_DIR}
 cp ${INP}/input_boundary_file ${TMP_DIR}
-cp ${INP}/long_noSplit_dem_input ${TMP_DIR}
+cp ${INP}/$DEM_INP ${TMP_DIR}
 cp ${BIN}/qdelaunay ${TMP_DIR}
 cd ${TMP_DIR}
 ln -s ${TMP_DIR}/ ${OUT}/${JOBNUM} #create link to the work dir
@@ -49,7 +51,7 @@ module list
 #### NPROCS = select*mpiprocs
 
 echo Simulation started at `date`
-./ellip3d 0.0005 0 1 long_noSplit_dem_input $OMP_NUM_THREADS
+./ellip3d 0.0005 0 1 $DEM_INP $OMP_NUM_THREADS
 echo Simulation finished at `date`
 
 # --- POSTPROCESS ---
