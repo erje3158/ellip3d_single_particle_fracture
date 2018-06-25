@@ -94,10 +94,8 @@ int main(int argc, char* argv[])
     dem::YOUNG         = demParams.youngsMod;
     dem::POISSON       = demParams.poisRatio;
 
-    dem::sigma_critical         = demParams.sigmaCrit; 
     dem::sigmaCompress          = demParams.sigmaComp;
     dem::ContactTensileCritical = demParams.tensileCrit;
-    dem::sigma_f                = demParams.sigmaF;
 
     dem::assembly A;
 

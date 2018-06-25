@@ -31,9 +31,6 @@ REAL YOUNG      = 8e+9;	 // quartz sand E  = 29GPa
 REAL POISSON    = 0.18;    // quartz sand v  = 0.25     
 const REAL Gs         = 2.65;    // quartz sand Gs = 2.65    
 
-// critical tensile stress for particle sub-division - original
-REAL sigma_critical = 2.7235e+7;	// pa, calculate from experiment
-
 // compressive strength for particle sub-division based on Hoek-Brown criterion
 REAL sigmaCompress = 200.5399e+7;	// calculated from experiment
 const REAL mi		  = 32.4;	// material const, for granite mi=32.4
@@ -45,11 +42,6 @@ REAL ContactTensileCritical = 350.196e+7;	// calculated from experiment
 // Weibull modulus used for particle strength
 const REAL weibullModulus = 0.5;
 const REAL basicRadius = 3e-4;	// the radius of the base particle in weibull function
-
-// properties for the springs
-REAL sigma_f = 4.13e7;	// soft criterion for spring
-const REAL Cf = 1.0739e+2;	// crack propagate speed, not accurate, since only point to calculate this speed
-				// the accurate propogate speed should be larger than this value
 
 // membrane particle material property
 const REAL memYOUNG   = 1.40e+6; // 1.4MPa

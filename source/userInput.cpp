@@ -33,10 +33,8 @@ void demInput::readData(const char * inputFile)
                                             input >> this->numSnaps   ;}
       if ( line == "$Particle Contact"  ) { input >> this->damping    ;
                                             input >> this->friction   ;}
-      if ( line == "$Particle Fracture" ) { input >> this->sigmaCrit  ;
-                                            input >> this->sigmaComp  ;
-                                            input >> this->tensileCrit;
-                                            input >> this->sigmaF     ;}
+      if ( line == "$Particle Fracture" ) { input >> this->sigmaComp  ;
+                                            input >> this->tensileCrit;}
     }
   input.close();
 }
@@ -67,10 +65,8 @@ void demInput::echoData()
   cout << "   friction       = " << this->friction    << endl;
   cout << endl;
   cout << "Particle Fracture:"                        << endl;
-  cout << "   sigmaCrit      = " << this->sigmaCrit   << endl;
   cout << "   sigmaComp      = " << this->sigmaComp   << endl;
   cout << "   tensileCrit    = " << this->tensileCrit << endl;
-  cout << "   sigmaF         = " << this->sigmaF      << endl;
   cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
   cout << endl << endl << endl;
 }
