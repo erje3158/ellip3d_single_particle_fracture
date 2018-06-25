@@ -39,6 +39,8 @@ const REAL mi		  = 32.4;	// material const, for granite mi=32.4
 REAL ContactTensileCritical = 350.196e+7;	// calculated from experiment
 //const REAL ContactTensile_critical = 0;	// in order to print out the maximum contact stress vs displacement
 
+REAL fracTough = 1.77e+6;
+
 // Weibull modulus used for particle strength
 const REAL weibullModulus = 0.5;
 const REAL basicRadius = 3e-4;	// the radius of the base particle in weibull function

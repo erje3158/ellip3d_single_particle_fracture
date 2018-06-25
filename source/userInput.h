@@ -22,6 +22,7 @@ public:
 
   double sigmaComp;
   double tensileCrit;
+  double fracTough;
 
   demInput()
   {
@@ -40,6 +41,7 @@ public:
 
     sigmaComp    = 0.0;
     tensileCrit  = 0.0;
+    fracTough    = 0.0;
   }
 
   ~demInput();

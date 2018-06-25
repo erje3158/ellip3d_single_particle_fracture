@@ -96,6 +96,7 @@ int main(int argc, char* argv[])
 
     dem::sigmaCompress          = demParams.sigmaComp;
     dem::ContactTensileCritical = demParams.tensileCrit;
+    dem::fracTough              = demParams.fracTough;
 
     dem::assembly A;
 

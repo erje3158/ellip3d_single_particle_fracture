@@ -49,6 +49,8 @@ extern const REAL mi;			// material const, for granite mi=32.4
 // critical maximum tensile stress for contact point criterion
 extern REAL ContactTensileCritical;	// calculated from experiment
 
+extern REAL fracTough;
+
 // Weibull modulus used for particle strength
 extern const REAL weibullModulus;
 extern const REAL basicRadius;	// the radius of the base particle in weibull function
