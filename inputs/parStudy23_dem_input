@@ -7,7 +7,7 @@ $DEM Constitutive
 
 $Time Parameters
 2.0e-8
-500000000
+50000000
 50000
 100
 
@@ -18,4 +18,4 @@ $Particle Contact
 $Particle Fracture
 6.0e+8
 3.0e+9
-1.77e+6
+1.77e+7

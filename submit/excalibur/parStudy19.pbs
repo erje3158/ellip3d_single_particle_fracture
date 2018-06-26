@@ -22,7 +22,7 @@ echo NSLOTS = $NSLOTS
 export OMP_NUM_THREADS=32
 echo OMP_NUM_THREADS = $OMP_NUM_THREADS
 
-export DEM_INP=parStudy19_dem_input
+export DEM_INP=${PREFIX}_dem_input
 
 # --- HARDCODED DIRECTORIES ---
 
